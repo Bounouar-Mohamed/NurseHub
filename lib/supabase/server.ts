@@ -5,9 +5,14 @@ import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 export const createClient = async () => {
   const cookieStore = await cookies()
 
+  // Vérifier que les variables d'environnement sont définies
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    throw new Error('Missing Supabase environment variables')
+  }
+
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         get(name: string) {
@@ -38,8 +43,13 @@ export const createClient = async () => {
 
 // Create a Supabase client with admin privileges
 export const createAdminClient = () => {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  // Vérifier que les variables d'environnement sont définies
+  if (!supabaseUrl || !supabaseServiceKey) {
+    throw new Error('Missing Supabase admin environment variables')
+  }
 
   return createSupabaseClient(supabaseUrl, supabaseServiceKey, {
     auth: {
