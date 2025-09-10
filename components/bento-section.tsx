@@ -102,15 +102,15 @@ export const BentoSection = memo(function BentoSection() {
   const cards = CARDS
 
   return (
-    <section className="w-full px-5 flex flex-col justify-center items-center overflow-visible bg-transparent">
+    <section className="w-full px-4 sm:px-5 flex flex-col justify-center items-center overflow-hidden bg-transparent">
       <div className="w-full py-8 md:py-16 relative flex flex-col justify-start items-start gap-6">
-        <div className="w-[200px] h-[400px] md:w-[300px] md:h-[600px] lg:w-[547px] lg:h-[938px] absolute top-[200px] md:top-[400px] lg:top-[614px] left-[20px] md:left-[50px] lg:left-[80px] origin-top-left rotate-[-33.39deg] bg-primary/10 blur-[50px] md:blur-[80px] lg:blur-[130px] z-0" />
+        <div className="w-[150px] h-[300px] sm:w-[200px] sm:h-[400px] md:w-[300px] md:h-[600px] lg:w-[547px] lg:h-[938px] absolute top-[100px] sm:top-[200px] md:top-[400px] lg:top-[614px] left-[10px] sm:left-[20px] md:left-[50px] lg:left-[80px] origin-top-left rotate-[-33.39deg] bg-primary/10 blur-[30px] sm:blur-[50px] md:blur-[80px] lg:blur-[130px] z-0" />
         <div className="self-stretch py-8 md:py-14 flex flex-col justify-center items-center gap-2 z-10">
           <div className="flex flex-col justify-start items-center gap-4">
-            <h2 className="w-full max-w-3xl text-center text-foreground text-4xl md:text-6xl font-semibold leading-tight md:leading-[66px]">
+            <h2 className="w-full max-w-3xl text-center text-foreground text-3xl sm:text-4xl md:text-6xl font-semibold leading-tight">
               A Connected & Personalized Care Experience
             </h2>
-            <p className="w-full max-w-2xl text-center text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
+            <p className="w-full max-w-2xl text-center text-muted-foreground text-base sm:text-lg md:text-xl font-medium leading-relaxed">
               Explore how NurseHub uses technology to deliver outstanding care that's convenient, secure, and always
               responsive to your needs.
             </p>

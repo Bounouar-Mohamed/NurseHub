@@ -1,3 +1,4 @@
+// app/layout.tsx
 import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
 import './globals.css'
@@ -20,12 +21,7 @@ export const metadata: Metadata = {
   },
 }
 
-// ✅ Mémoriser le layout pour éviter les re-renders
-const RootLayout = memo(function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+const RootLayout = memo(function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
@@ -37,6 +33,9 @@ const RootLayout = memo(function RootLayout({
             </main>
           </div>
         </Providers>
+
+        {/* 👇 Ajoute ce noeud pour les Portals UI (modals/drawers) */}
+        <div id="modal-root" />
       </body>
     </html>
   )

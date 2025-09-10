@@ -218,7 +218,7 @@ const HeroSection = memo(function HeroSection() {
       </div>
 
       <div className="flex-1 flex items-center justify-center relative">
-        <div className="container mx-auto px-10">
+        <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             {/* Image centrée sur mobile */}
             <div className="flex justify-center lg:hidden mb-8">
@@ -238,12 +238,12 @@ const HeroSection = memo(function HeroSection() {
 
             {/* Contenu à gauche */}
             <div className="text-left lg:w-1/2">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-                Exceptional Healthcare,<br className="hidden md:block" />
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
+                Exceptional Healthcare,<br className="hidden sm:block" />
                 Centered Around You
               </h1>
 
-              <p className="text-xl text-muted-foreground max-w-2xl lg:max-w-none mb-8">
+              <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl lg:max-w-none mb-8 leading-relaxed">
                 Get expert nursing care at home or online. NurseHub offers a seamless, premium healthcare experience
                 tailored to your needs in Dubai.
               </p>

@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* --------------------------------------------------
+   Design tokens (colors, radii)
+---------------------------------------------------*/
 @layer base {
   :root {
     /* Light Mode Colors */
@@ -19,13 +22,13 @@
     --popover: 0 0% 100%; /* #ffffff */
     --popover-foreground: 222.2 84% 4.9%; /* #0c0d21 */
 
-    /* Primary Accent Colors - Keeping the vibrant teal */
+    /* Primary Accent Colors */
     --primary: 165 96% 71%; /* #78fcd6 */
     --primary-foreground: 160 8% 6%; /* #0d0f0e */
     --primary-dark: 160 100% 50%; /* #00ffb6 */
     --primary-light: 160 48% 87%; /* #d1f8eb */
 
-    /* Secondary Accent Colors (for buttons, etc.) */
+    /* Secondary */
     --secondary: 222.2 47.4% 11.2%; /* #111827 */
     --secondary-foreground: 210 40% 98%; /* #f8fafc */
 
@@ -46,153 +49,96 @@
   }
 }
 
+/* --------------------------------------------------
+   Base reset (SAFE for fixed/portals)
+---------------------------------------------------*/
 @layer base {
-  * {
-    @apply border-border;
-  }
+  * { @apply border-border; }
+
   html {
-    @apply scroll-smooth;
-    scroll-behavior: smooth;
-    /* Optimisation des performances de défilement */
-    -webkit-overflow-scrolling: touch;
-    /* Optimisation GPU pour le scroll */
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
+    @apply scroll-smooth;                    /* smooth scroll */
+    -webkit-overflow-scrolling: touch;       /* iOS momentum */
+    height: 100%;
+    /* ❗ Pas de transform/perspective ici (casse position:fixed) */
   }
+
   body {
     @apply bg-background text-foreground;
-    /* Optimisations de rendu ultra-performantes */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    /* Optimisation GPU ciblée */
-    will-change: auto;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
+    overflow-x: hidden;
+    max-width: 100vw;
+    min-height: 100%;
+    /* ❗ Pas de transform/backface/will-change globaux ici */
   }
 }
 
-/* Smooth scroll globally */
-html {
-  scroll-behavior: smooth;
-  /* scroll-snap-type retiré : géré au niveau du conteneur principal */
-}
+/* --------------------------------------------------
+   Scrollbar policy (global hide kept as in original)
+   👉 Si tu veux les garder visibles, commente ces règles
+---------------------------------------------------*/
+/* Chrome, Safari, Opera */
+::-webkit-scrollbar { width: 0; height: 0; background: transparent; }
+body::-webkit-scrollbar { display: none; }
+/* Firefox + Edge legacy */
+body { scrollbar-width: none; -ms-overflow-style: none; }
 
-/* Hide scrollbar (Chrome, Safari, Opera) */
-::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-  background: transparent; /* optional: just to avoid any flash */
-}
-
-/* Hide scrollbar (Firefox) */
-body {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
-}
-
-body::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
-}
-
-/* Scroll Animations Ultra-Performantes */
+/* --------------------------------------------------
+   Anim helpers (SAFE)
+---------------------------------------------------*/
 .fade-in-section {
   opacity: 0;
   transform: translate3d(0, 20px, 0);
   transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: opacity, transform;
-  backface-visibility: hidden;
 }
 .fade-in-section.is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
-/* Stagger helpers optimisés */
 .stagger-1 { transition-delay: 0.03s; }
 .stagger-2 { transition-delay: 0.06s; }
 .stagger-3 { transition-delay: 0.09s; }
 
-/* Optimisations GPU pour les éléments animés */
+/* --------------------------------------------------
+   GPU hint (opt-in only on small, isolated elements)
+   ❗ Ne JAMAIS appliquer à html, body, header, main, nav, layout wrappers
+---------------------------------------------------*/
 .gpu-accelerated {
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
+  /* On évite transform/backface global qui créent des containing blocks */
   will-change: transform;
 }
 
-/* Optimisation des transitions globales */
-* {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ✅ Persistance des assets - Évite le déchargement */
+/* --------------------------------------------------
+   Media defaults (SAFE)
+---------------------------------------------------*/
 img, picture, video, canvas, svg {
   display: block;
   max-width: 100%;
-  /* Force la persistance en mémoire */
-  will-change: auto;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
+  /* Pas de transform global ici */
 }
 
-/* ✅ Optimisation spécifique Next.js Image */
-.next-image-wrapper {
-  position: relative;
-  overflow: hidden;
-}
+/* Next Image wrapper helper */
+.next-image-wrapper { position: relative; overflow: hidden; }
 
-/* ✅ Cache des images pour éviter le rechargement */
+/* Keep original quality tweaks */
 img[src*="/images/"] {
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
-  /* Force le cache navigateur */
-  /* ❌ SUPPRIMÉ : content-visibility et contain qui causent le re-décodage */
-  /* content-visibility: auto; */
-  /* contain: layout style paint; */
 }
 
-/* ✅ Optimisations spécifiques pour les cartes Bento - Version Safe */
-.bento-card-stable {
-  /* Force la persistance des éléments */
-  will-change: auto;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  /* ❌ SUPPRIMÉ : contain qui cause le re-décodage */
-  /* contain: layout style paint; */
-  /* Optimisation GPU pour les icônes */
-  /* isolation: isolate; */
-}
+/* Cards & SVG in Bento (no global transforms) */
+.bento-card-stable { /* contenu volontairement minimal et SAFE */ }
+.bento-card-stable svg { /* idem */ }
 
-/* ✅ Stabilisation des icônes Lucide - Version Safe */
-.bento-card-stable svg {
-  /* Force la persistance des SVG */
-  will-change: auto;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  /* ❌ SUPPRIMÉ : content-visibility qui cause le re-décodage */
-  /* content-visibility: auto; */
-}
+/* Optional utility to remove scrollbars on any container */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* ✅ Force la persistance des images Next.js - Version Safe */
-.next-image-wrapper img {
-  /* Empêche le déchargement des images */
-  will-change: auto !important;
-  transform: translate3d(0, 0, 0) !important;
-  backface-visibility: hidden !important;
-  /* ❌ SUPPRIMÉ : content-visibility et contain qui causent le re-décodage */
-  /* content-visibility: auto !important; */
-  /* contain: layout style paint !important; */
-}
-
-/* ✅ Optimisation spécifique pour les images dans les cartes Bento - Version Safe */
-.bento-card-stable img {
-  /* Force la persistance absolue */
-  will-change: auto !important;
-  transform: translate3d(0, 0, 0) !important;
-  backface-visibility: hidden !important;
-  /* ❌ SUPPRIMÉ : content-visibility et contain qui causent le re-décodage */
-  /* content-visibility: auto !important; */
-  /* contain: layout style paint !important; */
-  /* Force le rendu GPU */
-  /* isolation: isolate !important; */
-}
+/* --------------------------------------------------
+   Notes d’implémentation fixes/portals
+   - Les drawers/modals doivent être portalisés → document.body ou #modal-root
+   - Donne-leur position: fixed + z-index > navbar
+   - Utilise h-[100svh]/[100dvh] + overflow-y-auto à l’intérieur du panneau
+---------------------------------------------------*/
